@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("Гао Цзяньфэн 3530901/90001")
 
 package lesson1.task1
 
@@ -68,7 +68,9 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = sagenes.toDouble() * 48 * 4.445 / 100 + (arshins.toDouble() * 16 * 4.445 / 100) + (vershoks.toDouble() * 4.445 / 100)
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
+    sagenes.toDouble() * 48 * 4.445 / 100 + (arshins.toDouble() * 16 * 4.445 / 100) + (vershoks.toDouble() * 4.445 / 100)
+
 
 /**
  * Тривиальная
@@ -111,7 +113,8 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = initial * (100 + percent) / 100.toDouble() * (100 + percent) / 100.toDouble() * (100 + percent) / 100.toDouble()
+fun accountInThreeYears(initial: Int, percent: Int): Double =
+    initial * (100 + percent) / 100.toDouble() * (100 + percent) / 100.toDouble() * (100 + percent) / 100.toDouble()
 
 /**
  * Простая
@@ -119,4 +122,5 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = initial * (100 + p
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = number / 100 + (number / 10 - number / 100 * 10) * 10 + (number - number / 10 * 10) * 100
+fun numberRevert(number: Int): Int =
+    number / 100 + (number / 10 - number / 100 * 10) * 10 + (number - number / 10 * 10) * 100
