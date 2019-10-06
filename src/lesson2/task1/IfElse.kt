@@ -3,7 +3,6 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
-import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -66,24 +65,23 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     val y1 = age - age / 10 * 10
-    if (age in 1..20)
-        return when (age) {
+    when (age) {
+        in 1..20 -> return when (age) {
             1 -> "$age год"
             2, 3, 4 -> "$age года"
             else -> "$age лет"
         }
-    if (age in 100..120)
-        return when (age) {
+        in 100..120 -> return when (age) {
             101 -> "$age год"
             102, 103, 104 -> "$age года"
             else -> "$age лет"
         }
-    else
-        return when (y1) {
+        else -> return when (y1) {
             1 -> "$age год"
             2, 3, 4 -> "$age года"
             else -> "$age лет"
         }
+    }
 }
 
 /**
@@ -161,24 +159,22 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    if (kingX - bishopX == kingY - bishopY) {
-        return when {
+    when {
+        kingX - bishopX == kingY - bishopY -> return when {
             kingX == rookX -> 3
             kingY == rookY -> 3
             else -> 2
         }
-    } else if (bishopX - kingX == kingY - bishopY){
-        return when {
+        bishopX - kingX == kingY - bishopY -> return when {
             kingX == rookX -> 3
             kingY == rookY -> 3
             else -> 2
         }
-    } else {
-        return if (kingX == rookX) {
-            1
-        } else if (kingY == rookY) {
-            1
-        } else 0
+        else -> return when {
+            kingX == rookX -> 1
+            kingY == rookY -> 1
+            else -> 0
+        }
     }
 }
 
@@ -227,15 +223,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         }
     }
     val e: Double = t * t - (y * y + u * u)
-    if (a + b >= c && a + c >= b && b + c >= a) {
-        if (e < 0) {
-            return 0
-        } else if (e > 0) {
-            return 2
-        } else {
-            return 1
+    return if (a + b >= c && a + c >= b && b + c >= a) {
+        when {
+            e < 0 -> 0
+            e > 0 -> 2
+            else -> 1
         }
-    } else return -1
+    } else -1
 }
 
 /**
@@ -247,13 +241,17 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (b >= d){
-        if (a > d) return -1
-        else if (a in c..d) return d - a
-        else return d - c
+    return if (b >= d){
+        when {
+            a > d -> -1
+            a in c..d -> d - a
+            else -> d - c
+        }
     } else {
-        if (c > b) return -1
-        else if (c in a..b) return b - c
-        else return b - a
+        when {
+            c > b -> -1
+            c in a..b -> b - c
+            else -> b - a
+        }
     }
 }
