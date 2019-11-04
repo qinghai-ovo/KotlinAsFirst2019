@@ -108,11 +108,15 @@ fun fib(n: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {
     var k: Int = if (m > n) m else n
+    var q: Int = if (m > n) n else m
+    var c: Int
     return if (k == m && k == n) k else {
-        while (k % m != 0 || k % n != 0) {
-            k += 1
+        while (k % q != 0) {
+            c = q
+            q = k % q
+            k = c
         }
-        k
+        m * n / q
     }
 
 }
