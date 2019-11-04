@@ -64,7 +64,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    val y1 = age - age / 10 * 10
+    val y1 = age % 10
     when (age) {
         in 1..20 -> return when (age) {
             1 -> "$age год"
@@ -96,10 +96,10 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val s1: Double = t1 * v1
-    val s2: Double = t2 * v2
-    val s3: Double = t3 * v3
-    val s: Double = s1 + s2 + s3
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
+    val s = s1 + s2 + s3
     val sh = s / 2
     return if (sh <= s1)
         sh / v1
@@ -191,7 +191,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val t: Double
     val y: Double
     val u: Double
-    if (a >= b && a >= c){
+    if (a >= b && a >= c) {
         if (b >= c) {
             t = a
             y = b
@@ -241,7 +241,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return if (b >= d){
+    return if (b >= d) {
         when {
             a > d -> -1
             a in c..d -> d - a

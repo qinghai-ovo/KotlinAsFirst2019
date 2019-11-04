@@ -20,14 +20,11 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    val a: Int = number / 1000
-    val b: Int = (number - a * 1000) / 100
-    val c: Int = (number - a * 1000 - b * 100) / 10
-    val d: Int = (number - a * 1000 - b * 100 - c * 10)
-    return when {
-        a + b == c + d -> true
-        else -> false
-    }
+    val a = number / 1000
+    val b = (number - a * 1000) / 100
+    val c = (number - a * 1000 - b * 100) / 10
+    val d = (number - a * 1000 - b * 100 - c * 10)
+    return a + b == c + d
 }
 
 /**
@@ -37,14 +34,12 @@ fun isNumberHappy(number: Int): Boolean {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return when {
-        x1 - x2 == y1 - y2 -> true
-        x2 - x1 == y1 - y2 -> true
-        x1 == x2 -> true
-        y1 == y2 -> true
-        else -> false
-    }
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = when {
+    x1 - x2 == y1 - y2 -> true
+    x2 - x1 == y1 - y2 -> true
+    x1 == x2 -> true
+    y1 == y2 -> true
+    else -> false
 }
 
 /**
@@ -74,11 +69,8 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean {
-    val d: Double = sqrt(sqr(x1 - x2) + sqr(y1 - y2))
-    return when {
-        d <= (r2 - r1) -> true
-        else -> false
-    }
+    val d = sqrt(sqr(x1 - x2) + sqr(y1 - y2))
+    return d <= (r2 - r1)
 }
 
 /**
@@ -90,15 +82,13 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return when {
-        a <= r && b <= s -> true
-        a <= r && c <= s -> true
-        a <= s && b <= r -> true
-        a <= s && c <= r -> true
-        b <= r && c <= s -> true
-        b <= s && c <= r -> true
-        else -> false
-    }
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
+    a <= r && b <= s -> true
+    a <= r && c <= s -> true
+    a <= s && b <= r -> true
+    a <= s && c <= r -> true
+    b <= r && c <= s -> true
+    b <= s && c <= r -> true
+    else -> false
 }
 
