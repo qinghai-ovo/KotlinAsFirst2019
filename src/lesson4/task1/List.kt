@@ -1,10 +1,9 @@
-@file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
+@file:Suppress("Гао Цзяньфэн 3530901/90001")
 
 package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
-import sun.rmi.log.LogInputStream
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -157,7 +156,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     else {
         val c = mean(list)
         var i = 0
-        var a = 0.0
+        var a: Double
         for (element in list) {
             a = list[i]
             list[i] = a - c
@@ -211,7 +210,6 @@ fun polynom(p: List<Int>, x: Int): Int {
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     return if (list.size == 0) list
     else {
-        val a = list[0]
         for (i in 1 until list.size) {
             list[i] += list[i - 1]
         }
@@ -227,23 +225,21 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    var listof = mutableListOf<Int>()
-    var a = 2
+    val list = mutableListOf<Int>()
     var i = n
-    var c = 0
-    if (n == 2) {
-        listof.add(2)
-        return listof
+    return if (n == 2) {
+        list.add(2)
+        list
     } else {
         for (a in 2..n) {
             while (i % a == 0) {
-                if(0 == i % a) {
-                    listof.add(a)
+                if (0 == i % a) {
+                    list.add(a)
                 }
                 i /= a
             }
         }
-        return listof
+        list
     }
 }
 
@@ -268,7 +264,7 @@ fun factorizeToString(n: Int): String {
  */
 fun convert(n: Int, base: Int): List<Int> {
     var a = n
-    val listof = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     val b = mutableListOf<Int>()
     return if (a >= base) {
         while (a >= base) {
@@ -276,13 +272,13 @@ fun convert(n: Int, base: Int): List<Int> {
             a /= base
         }
         if (a != 0) b.add(a)
-        for (i in 0 until b.size) {
-            listof[i] = b[b.size - i]
+        for (i in b.size - 1 downTo 0) {
+            list.add(b[i])
         }
-        listof
+        list
     } else {
-        listof.add(a)
-        listof
+        list.add(a)
+        list
     }
 }
 
@@ -297,10 +293,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
-    val list = convert(n, base)
-    return list.joinToString(separator = "*")
-}
+fun convertToString(n: Int, base: Int): String = n.toString(base)
 
 /**
  * Средняя
@@ -309,7 +302,17 @@ fun convertToString(n: Int, base: Int): String {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    return if (digits.size == 1) digits[0]
+    else {
+        var result = digits[0]
+        val a = digits.size - 2
+        for (i in 0..a) {
+            result = result * base + digits[i + 1]
+        }
+        result
+    }
+}
 
 /**
  * Сложная
@@ -323,7 +326,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
 
 /**
  * Сложная
