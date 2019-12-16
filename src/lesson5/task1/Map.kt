@@ -100,12 +100,14 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
         val there = mutableListOf<String>()
         val two = mutableListOf<String>()
         val one = mutableListOf<String>()
+        val zero = mutableListOf<String>()
         for (i in grades.keys) {
             if (grades[i] == 5) five.add(i)
             if (grades[i] == 4) four.add(i)
             if (grades[i] == 3) there.add(i)
             if (grades[i] == 2) two.add(i)
             if (grades[i] == 1) one.add(i)
+            if (grades[i] == 0) zero.add(i)
         }
         val re = mutableMapOf<Int, List<String>>()
         if (five.size != 0) re[5] = five
@@ -113,6 +115,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
         if (there.size != 0) re[3] = there
         if (two.size != 0) re[2] = two
         if (one.size != 0) re[1] = one
+        if (zero.size != 0) re[0] = zero
         return re
     }
 }
@@ -128,17 +131,21 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    var t = 0
-    for (key in b.keys) {
-        if (a.containsKey(key) && a.getValue(key) == b.getValue(key)) {
-            t = 1
-            break
+    return if (a.isEmpty() && b.isEmpty()) true
+    else {
+        var t = 0
+        for (key in b.keys) {
+            if (a.containsKey(key) && a.getValue(key) == b.getValue(key)) {
+                t = 1
+                break
+            }
+        }
+        when (t) {
+            1 -> true
+            else -> false
         }
     }
-    return when (t) {
-        1 -> true
-        else -> false
-    }
+
 }
 
 
@@ -173,7 +180,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val c = a intersect b
-    var result = mutableListOf<String>()
+    val result = mutableListOf<String>()
     for (i in c) {
         result.add(i)
     }
@@ -197,7 +204,18 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val result = mutableMapOf<String, String>()
+    result.putAll(mapA)
+    for (i in mapB.keys) {
+        if (mapA.containsKey(i) && mapA[i] != mapB[i]) {
+            result[i] = result.getValue(i) + ", " + mapB.getValue(i)
+        } else {
+            result[i] = mapB.getValue(i)
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -209,7 +227,14 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val m = mutableMapOf<String, Double>()
+    for (c in stockPrices) {
+        if (m.containsKey(c.first)) m[c.first] = (c.second + m.getValue(c.first)) / 2
+        else m += c
+    }
+    return m
+}
 
 /**
  * Средняя
@@ -226,7 +251,32 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var n = 0.0
+    var c = 0.0
+    val s = mutableMapOf<String, Double>()
+    var k = ""
+    var name = ""
+    for (i in stuff.keys) {
+        k = stuff.getValue(i).first
+        if (k == kind) {
+            s[i] = stuff.getValue(i).second
+        }
+    }
+    return if (s.isNotEmpty()) {
+        for (key in s.keys) {
+            c = s.getValue(key)
+            if (n == 0.0) {
+                n = c
+                name = key
+            } else if (n >= c) {
+                n = c
+                name = key
+            }
+        }
+        name
+    } else null
+}
 
 /**
  * Средняя
@@ -237,7 +287,21 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val w = mutableMapOf<Int, Char>()
+    var n = 1
+    var c = 0
+    for (i in word) {
+        w[n] = i
+        n += 1
+    }
+    for (key in w.keys) {
+        for (a in chars) {
+            if (w[key] == a) c += 1
+        }
+    }
+    return c == word.length
+}
 
 /**
  * Средняя
@@ -251,7 +315,19 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val m = mutableMapOf<String, Int>()
+    val n = mutableMapOf<String, Int>()
+    for (char in list) {
+        if (n.containsKey(char)) {
+            n[char] = n.getValue(char) + 1
+        } else n[char] = 1
+    }
+    for (i in n.keys) {
+        if (n[i] != 1) m[i] = n.getValue(i)
+    }
+    return m
+}
 
 /**
  * Средняя
@@ -262,7 +338,25 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    val n = mutableMapOf<Char, Int>()
+    val w = words.toMutableList()
+    val m = mutableMapOf<Char, Int>()
+    var q = 1
+    return if (words.isNotEmpty()) {
+        for (i in words.last()) {
+            n[i] = 0
+        }
+        w.remove(words.last())
+        for (o in w) {
+            for (char in o) {
+                if (n.contains(char)) n[char] = 1
+            }
+        }
+        !n.containsValue(0)
+    } else false
+
+}
 
 /**
  * Сложная
