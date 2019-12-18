@@ -69,7 +69,62 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    return if (parts.size == 3) {
+        val n = mton(parts)
+        if (check(n)) {
+            val c = n[0].toInt()
+            if (c < 10) n[0] = "0$c" // 1 to 01
+            n.joinToString(separator = ".")
+        } else ""
+    } else ""
+}
+
+fun mton(parts: List<String>): MutableList<String> {
+    val n = mutableListOf<String>()
+    for (part in parts) {
+        n.add(part)
+    }
+    when {
+        n[1] == "январь" -> n[1] = "01"
+        n[1] == "февраля" -> n[1] = "02"
+        n[1] == "март" -> n[1] = "03"
+        n[1] == "апреля" -> n[1] = "04"
+        n[1] == "май" -> n[1] = "05"
+        n[1] == "июнь" -> n[1] = "06"
+        n[1] == "июля" -> n[1] = "07"
+        n[1] == "август" -> n[1] = "08"
+        n[1] == "сентября" -> n[1] = "09"
+        n[1] == "октября" -> n[1] = "10"
+        n[1] == "ноября" -> n[1] = "11"
+        n[1] == "декабря" -> n[1] = "12"
+        else -> n[1] = "13"
+    }// all to number
+    return n
+}
+
+fun check(n: List<String>): Boolean {
+    var test: Boolean? = null
+    val mon = n[1]
+    val day = n[0].toInt()
+    if (mon == "01" || mon == "03" || mon == "05" || mon == "07" || mon == "08" || mon == "10" || mon == "12") {
+        test = day <= 31
+    } else if (mon == "02") {
+        val a = n[2].toInt()
+        if (a % 400 == 0 || (a % 4 == 0 && a % 100 != 0)) {
+            if (day <= 29)
+            else test = false
+        } else {
+            test = day <= 28
+        }
+    } else if (mon == "04" || mon == "06" || mon == "09" || mon == "11") {
+        test = day <= 30
+    } else {
+        test = false
+    }
+    return test!!
+}
 
 /**
  * Средняя

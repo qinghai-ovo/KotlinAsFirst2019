@@ -3,6 +3,8 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -225,7 +227,21 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var z: Double
+    var sum = 0.0
+    var j = 1
+    var q = 0
+    do {
+        z = x.pow(j) / factorial(j)
+        if (q % 2 == 1) sum -= z
+        else sum += z
+        j += 2
+        q += 1
+    } while (z > eps)
+    return sum
+}
+
 
 /**
  * Средняя
@@ -236,7 +252,19 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var z: Double
+    var sum = 1.0
+    var j = 2
+    var q = 1
+    do {
+        z = (-1.0).pow(q) * x.pow(j) / factorial(j)
+        sum += z
+        j += 2
+        q += 1
+    } while (sqrt(sqr(z)) > eps)
+    return sum
+}
 
 /**
  * Средняя
