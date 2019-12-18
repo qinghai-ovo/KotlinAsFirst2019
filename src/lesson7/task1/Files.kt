@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
+@file:Suppress("Гао Цзяньфэн 3530901/90001")
 
 package lesson7.task1
 
