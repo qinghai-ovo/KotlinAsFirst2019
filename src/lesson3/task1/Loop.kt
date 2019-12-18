@@ -3,9 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.math.absoluteValue
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Пример
@@ -141,13 +139,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var k = n
-    do {
-        k -= 1
-    } while (n % k != 0)
-    return k
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -229,19 +221,19 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double {
     var z: Double
+    val a: Double = x % (2 * PI)
     var sum = 0.0
-    var j = 1
-    var q = 0
-    do {
-        z = x.pow(j) / factorial(j)
-        if (q % 2 == 1) sum -= z
-        else sum += z
-        j += 2
-        q += 1
-    } while (z > eps)
+    var power = 1
+    var t = -1
+    z = a
+    while (abs(z) >= abs(eps)) {
+        sum += z
+        power += 2
+        z = ((t) * a.pow(power) / factorial(power))
+        t *= (-1)
+    }
     return sum
 }
-
 
 /**
  * Средняя
@@ -253,16 +245,17 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-    var z: Double
+    var z: Double = (x)
     var sum = 1.0
-    var j = 2
-    var q = 1
-    do {
-        z = (-1.0).pow(q) * x.pow(j) / factorial(j)
+    var power = 0
+    var t = -1
+    val a = x % (2 * PI)
+    while (abs(z) >= abs(eps)) {
+        power += 2
+        z = ((t) * a.pow(power) / factorial(power))
+        t *= (-1)
         sum += z
-        j += 2
-        q += 1
-    } while (sqrt(sqr(z)) > eps)
+    }
     return sum
 }
 
@@ -273,7 +266,19 @@ fun cos(x: Double, eps: Double): Double {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int  {
+    var num = n
+    var rn = 0L
+    val digitCount = digitNumber(num)
+    for (i in 1..digitCount) {
+        val digit = num % 10
+        num /= 10
+        rn += digit
+        rn *= 10
+    }
+    rn /= 10
+    return rn.toInt()
+}
 
 /**
  * Средняя
@@ -284,7 +289,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -294,7 +299,18 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    if (n / 10 == 0) return false
+    var digit = n % 10
+    var num = n / 10
+    while (digit == (num % 10)) {
+        digit = num % 10
+        num /= 10
+        if (num == 0) return false
+    }
+    return true
+}
+
 
 /**
  * Сложная
@@ -305,7 +321,20 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int  {
+    var sqrNum = 0
+    var digitCounter = 0
+    while (digitCounter < n) {
+        sqrNum++
+        digitCounter += digitNumber(sqrNum * sqrNum)
+    }
+    sqrNum *= sqrNum
+    while (digitCounter != n) {
+        sqrNum /= 10
+        digitCounter--
+    }
+    return sqrNum % 10
+}
 
 /**
  * Сложная
@@ -316,4 +345,18 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var fibNum = 0
+    var digitCounter = 0
+    while (digitCounter < n) {
+        fibNum++
+        digitCounter += digitNumber(fib(fibNum))
+    }
+    var fib = fib(fibNum)
+    while (digitCounter != n) {
+        fib /= 10
+        digitCounter--
+    }
+    return fib % 10
+}
+

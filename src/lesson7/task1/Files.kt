@@ -54,16 +54,17 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val f = File(inputName).readText()
     val result = mutableMapOf<String, Int>()
-    for (i in substrings) {
-        var count = 0
-        val pattern = i.toRegex(RegexOption.IGNORE_CASE)
-        val found = pattern.findAll(f)
-        found.forEach { f ->
-            count++
+    val substrings1 = substrings.toSet()
+    for (w in substrings1) result[w] = 0
+    for (lines in File(inputName).readLines()) {
+        for (w in substrings1) {
+            val windows = lines.windowed(w.length, 1)
+            for (wind in windows) {
+                if (w.toLowerCase() == wind.toLowerCase()) result[w] =
+                    result.getOrDefault(w, 0) + 1
+            }
         }
-        result[i] = count
     }
     return result
 }
@@ -82,8 +83,36 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+val replaceMap = mapOf(
+    'ы' to 'и',
+    'я' to 'а',
+    'ю' to 'у',
+    'Ы' to 'И',
+    'Я' to 'А',
+    'Ю' to 'У'
+)
+
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var firstLine = true
+    for (line in File(inputName).readLines()) {
+        var tempLine = line
+        var tempIndex = -1
+        while (tempLine.matches(Regex(""".*[жшчщЖШЧЩ][ыяюЫЯЮ].*"""))) {
+            tempIndex = tempLine.findAnyOf(listOf("ж", "ш", "ч", "щ", "Ж", "Ч", "Ш", "Щ"), tempIndex + 1)?.first ?: -1
+            if (tempIndex == -1) break
+            if ((tempIndex + 1 < line.length) && line[tempIndex + 1].toString().matches(Regex("""[ыяюЫЯЮ]"""))) {
+                tempLine = tempLine.substring(0, tempIndex + 1)
+                tempLine += replaceMap[line[tempIndex + 1]]
+                if (tempIndex + 2 < line.length) tempLine += line.substring(tempIndex + 2, line.length)
+            }
+        }
+        if (!firstLine) writer.write("\n")
+        writer.write(tempLine.trimEnd())
+        firstLine = false
+    }
+
+    writer.close()
 }
 
 /**

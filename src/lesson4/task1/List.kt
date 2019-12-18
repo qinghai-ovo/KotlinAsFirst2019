@@ -326,7 +326,13 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
+fun decimalFromString(str: String, base: Int): Int = decimal(str.map { allTon(it) }, base)
+
+fun allTon(num: Char): Int {
+    return if (num.isDigit()) num - '0'
+    else (num - 'a' + 10)
+}
+
 
 /**
  * Сложная
@@ -336,7 +342,23 @@ fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val result = mutableListOf<String>()
+    var d: Int = n / 1000
+    var c: Int = n % 1000
+    val rd: List<String> = listOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val rt: List<String> = listOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val rh: List<String> = listOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+    for (i in 1..d) result.add("M")
+    d = c / 100
+    result.add(rh[d])
+    c %= 100
+    d = c / 10
+    result.add(rt[d])
+    c %= 10
+    result.add(rd[c])
+    return result.joinToString("")
+}
 
 /**
  * Очень сложная

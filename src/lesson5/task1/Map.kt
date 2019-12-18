@@ -92,32 +92,12 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    if (grades.isEmpty()) {
-        return mapOf()
-    } else {
-        val five = mutableListOf<String>()
-        val four = mutableListOf<String>()
-        val there = mutableListOf<String>()
-        val two = mutableListOf<String>()
-        val one = mutableListOf<String>()
-        val zero = mutableListOf<String>()
-        for (i in grades.keys) {
-            if (grades[i] == 5) five.add(i)
-            if (grades[i] == 4) four.add(i)
-            if (grades[i] == 3) there.add(i)
-            if (grades[i] == 2) two.add(i)
-            if (grades[i] == 1) one.add(i)
-            if (grades[i] == 0) zero.add(i)
-        }
-        val re = mutableMapOf<Int, List<String>>()
-        if (five.size != 0) re[5] = five
-        if (four.size != 0) re[4] = four
-        if (there.size != 0) re[3] = there
-        if (two.size != 0) re[2] = two
-        if (one.size != 0) re[1] = one
-        if (zero.size != 0) re[0] = zero
-        return re
+    val result = mutableMapOf<Int, MutableList<String>>()
+    for ((name, grade) in grades) {
+        if (result[grade] == null) result[grade] = mutableListOf(name)
+        else result[grade]?.add(name)
     }
+    return result
 }
 
 /**
@@ -252,32 +232,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var n: Double? = null
-    var c: Double
-    val s = mutableMapOf<String, Double>()
-    var k: String
-    var name = ""
-    for (i in stuff.keys) {
-        k = stuff.getValue(i).first
-        if (k == kind) {
-            s[i] = stuff.getValue(i).second
+    var minValue = Double.MAX_VALUE
+    var cheapest: String? = null
+    for ((brand, Price) in stuff)
+        if ((Price.first == kind) && (Price.second <= minValue)) {
+            minValue = Price.second
+            cheapest = brand
         }
-    }
-    return if (s.isNotEmpty()) {
-        for (key in s.keys) {
-            c = s.getValue(key)
-            if (n == 0.0) {
-                n = c
-                name = key
-            } else if (n != null) {
-                if (n >= c) {
-                    n = c
-                    name = key
-                }
-            }
-        }
-        name
-    } else null
+    return cheapest
 }
 
 /**
@@ -401,7 +363,14 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in 0 until list.size) {
+        for (j in 1 until list.size) {
+            if ((list[i] + list[j] == number) && (i != j)) return i to j
+        }
+    }
+    return -1 to -1
+}
 
 /**
  * Очень сложная
