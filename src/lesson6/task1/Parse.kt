@@ -113,8 +113,7 @@ fun check(n: List<String>): Boolean {
     } else if (mon == "02") {
         val a = n[2].toInt()
         if (a % 400 == 0 || (a % 4 == 0 && a % 100 != 0)) {
-            if (day <= 29)
-            else test = false
+            test = day <= 29
         } else {
             test = day <= 28
         }
