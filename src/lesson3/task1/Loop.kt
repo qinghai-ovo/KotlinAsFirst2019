@@ -107,8 +107,8 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var k: Int = if (m > n) m else n
-    var q: Int = if (m > n) n else m
+    var k = if (m > n) m else n
+    var q = if (m > n) n else m
     var c: Int
     return if (k == m && k == n) k else {
         while (k % q != 0) {
@@ -129,7 +129,7 @@ fun lcm(m: Int, n: Int): Int {
 fun minDivisor(n: Int): Int {
     var k = 1
     do {
-        k += 1
+        k++
     } while (n % k != 0)
     return k
 }
@@ -266,7 +266,7 @@ fun cos(x: Double, eps: Double): Double {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int  {
+fun revert(n: Int): Int {
     var num = n
     var rn = 0L
     val digitCount = digitNumber(num)
@@ -321,19 +321,16 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int  {
-    var sqrNum = 0
-    var digitCounter = 0
-    while (digitCounter < n) {
-        sqrNum++
-        digitCounter += digitNumber(sqrNum * sqrNum)
-    }
-    sqrNum *= sqrNum
-    while (digitCounter != n) {
-        sqrNum /= 10
-        digitCounter--
-    }
-    return sqrNum % 10
+fun squareSequenceDigit(n: Int): Int {
+    var ws = 0
+    var cs = 0
+    var s = 1
+    do {
+        cs++
+        s = sqr(cs)
+        ws += digitNumber(s)
+    } while (ws < n)
+    return (s / 10.0.pow(ws - n) % 10).toInt()
 }
 
 /**

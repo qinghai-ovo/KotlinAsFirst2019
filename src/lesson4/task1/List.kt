@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import lesson3.task1.digitCountInNumber
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -156,8 +157,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     else {
         val c = mean(list)
         var i = 0
-        var a: Double
         for (element in list) {
+            var a: Double
             a = list[i]
             list[i] = a - c
             i += 1
@@ -190,12 +191,14 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    var z = 0.0
+    var z = 0
+    var c = 1
     for (i in 0 until p.size) {
-        z += p[i] * x.toDouble().pow(i)
+        z += p[i] * c
+        c *= x
     }
-    return z.toInt()
-}
+    return z
+}//Я хотел бы спросить, как настроить функцию Pow для целых чисел (я не могу решить ее после использования другого решения
 
 /**
  * Средняя
@@ -343,20 +346,21 @@ fun allTon(num: Char): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
+    val gw: List<String> = listOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val sw: List<String> = listOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val bw: List<String> = listOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
     val result = mutableListOf<String>()
-    var d: Int = n / 1000
-    var c: Int = n % 1000
-    val rd: List<String> = listOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
-    val rt: List<String> = listOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
-    val rh: List<String> = listOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
-    for (i in 1..d) result.add("M")
-    d = c / 100
-    result.add(rh[d])
-    c %= 100
-    d = c / 10
-    result.add(rt[d])
-    c %= 10
-    result.add(rd[c])
+    var a = n / 1000 //千位数数字
+    var b = n % 1000 //余数
+    for (i in 1..a) result.add("M")
+    a = b / 100 //百位数
+    b %= 100 //余数
+    result.add(bw[a])
+    a = b / 10 //十位数
+    b %= 10 // 余数
+    result.add(sw[a])
+    a = b // 个位数
+    result.add(gw[a])
     return result.joinToString("")
 }
 
