@@ -257,7 +257,10 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     }
     for (n in w) {
         for (a in chars) {
-            if (n == a) check++
+            if (n == a) {
+                check++
+                break
+            }
         }
     }
     return check == word.length
